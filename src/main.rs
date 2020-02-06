@@ -8,4 +8,6 @@ fn main() {
     let _ar: Vec<i128> = linear_congruent::gen(1000);
     square_multiply::run();
 
+//    Test
+
 }
