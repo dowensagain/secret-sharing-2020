@@ -22,12 +22,12 @@ pub fn gen(bit_length:usize) -> Vec<BigUint> {
     let mut p = s.clone();
     let mut ar= Vec::new();
 
-    for _i in 0..num + 6 {
+    for _i in 0..num + 1 {
         n = (&a * &p + &c) % &m;
         p = n.clone();
         ar.push(n.clone());
         println!("{},{}", _i, &n);
     }
 
-    return ar[5..].to_vec();
+    ar
 }
