@@ -7,7 +7,7 @@ use secret_sharing_spring2020::exponentiation::square_multiply;
 
 fn main() {
 
-    let _ar: Vec<BigUint> = linear_congruent::gen(1024);
+    let _ar: Vec<BigUint> = linear_congruent::gen(4096);
     square_multiply::run();
 
 //    Test
