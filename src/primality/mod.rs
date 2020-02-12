@@ -1,2 +1,2 @@
 pub mod fermat;
-pub mod other;
+pub mod miller_rabin;
