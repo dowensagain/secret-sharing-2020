@@ -10,7 +10,7 @@ fn main() {
 
     let _ar: Vec<BigUint> = linear_congruent::gen(4);
     square_multiply::run();
-    let n = BigUint::from(22u32);
+    let n = BigUint::from(112u32);
     let mut twopow = 0u32;
     let mut r = BigUint::from(0u32);
 
