@@ -8,19 +8,20 @@ use secret_sharing_spring2020::prime::factorization;
 
 fn main() {
 
-    let _ar: Vec<BigUint> = linear_congruent::gen(4);
+    let _ar: Vec<BigUint> = linear_congruent::gen(32);
     square_multiply::run();
-    let n = BigUint::from(19984u32);
-    let mut twopow = 0u32;
-    let mut r = BigUint::from(0u32);
+    // let n = BigUint::from(199842032u32);
+    let mut twopow:u32;
+    let mut r: BigUint;
 
-    match factorization::get_millrab_d(&n) {
-        Ok(tp) => {
-            twopow = tp.0;
-            r = tp.1;
+    match factorization::get_millrab_d_vec(&_ar) {
+        Some(tp) => {
+            twopow = tp.power_two;
+            r = tp.r;
         }
-        Err(_) => panic!("Number odd")
+        None => panic!("Number odd")
     }
+    println!("{}, {}", twopow, r);
 //    Test
 
 }

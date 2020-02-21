@@ -19,7 +19,7 @@ pub fn gen(bit_length:usize) -> Vec<BigUint> {
 
     let num_to_gen:u32 = 100; // Only generate 100; it doesn't take long to repeat
     let mut unfinished = true;
-    let mut _i  = 0;
+    let mut i  = 0;
     let mut n: BigUint;
     let mut p = s.clone();
     let mut ar= Vec::new();
@@ -29,9 +29,9 @@ pub fn gen(bit_length:usize) -> Vec<BigUint> {
         // Only store the number if it matches our bit length, and is not a repeat
         if (n.bits() == bit_length) && (p != n) {
             ar.push(n.clone());
-            println!("{},{}", _i, &n);
-            _i += 1;
-            if _i > num_to_gen { unfinished = false; }
+            println!("{},{}", i, &n);
+            i += 1;
+            if i > num_to_gen { unfinished = false; }
         }
         p = n.clone();
     }

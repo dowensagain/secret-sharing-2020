@@ -1,29 +1,46 @@
 use num::BigUint;
 
+pub struct MillerRabinD {
+    pub power_two: u32,
+    pub r: BigUint
+}
 
-pub fn get_millrab_d(n:&BigUint) -> Result<(u32, BigUint), ()> {
-    let mut m:BigUint = n.clone();
-    let mut two_power:u32 = 0;
-    let mut r = BigUint::from(0u32);
-    let mut still_even = is_even(&m);
+pub fn get_millrab_d(n:&BigUint) -> Option<MillerRabinD> {
+    let mut r:BigUint = n.clone();
+    let mut power_two:u32 = 0;
+    let mut is_even = check_even(&r);
 
-    if !still_even {
-        panic!("Number odd!")
+    // Check to make sure the number passed is even
+    // If so, LSB = 0
+    if !is_even { return None; }
+
+    while is_even {
+        r = r >> 1; // We know the LSB is 0. Bitshift right to check the next.
+        power_two += 1; // Increment power of 2
+        is_even = check_even(&r); // Check new LSB
     }
 
-    while still_even {
-        m = m >> 1;
-        two_power += 1;
-        still_even = is_even(&m);
+    let d = MillerRabinD {
+        power_two,
+        r
+    };
+
+    Some(d)
+
+}
+
+pub fn get_millrab_d_vec(vec:&Vec<BigUint>) -> Option<MillerRabinD> {
+    for i in vec.iter() {
+        match get_millrab_d(i) {
+            Some(d) => return Some(d),
+            None => println!("Odd, skipping...")
+        }
     }
-
-    r = m.clone();
-
-    Ok((two_power, r))
+    None
 }
 
 fn last_bit_u8(n:&u8) -> u8 {
-    let lsb:u8 = *n | 0b11111110;
+    let lsb:u8 = n | 0b11111110;
     return if lsb == 255u8 {
         1u8
     } else {
@@ -33,10 +50,9 @@ fn last_bit_u8(n:&u8) -> u8 {
 
 fn last_bit_BigUint(n:&BigUint) -> u8 {
     let n_bytes = n.to_bytes_le()[0];
-    let lsb = last_bit_u8(&n_bytes);
-    lsb
+    return last_bit_u8(&n_bytes);
 }
 
-fn is_even(n:&BigUint) -> bool {
+fn check_even(n:&BigUint) -> bool {
     return last_bit_BigUint(n) == 0;
 }
