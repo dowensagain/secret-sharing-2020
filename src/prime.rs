@@ -15,11 +15,20 @@ pub fn test_miller_rabin(vec:&Vec<BigUint>) -> Option<bool> {
     let t = 10;
 //    if check_odd(&n) { return None; }
     let d:MillerRabinD;
+    let index_prime:usize;
 
     match get_millrab_d_vec(&vec) {
-        Some(sd) => d = sd,
+        Some((sd, i)) => {
+            d = sd;
+            index_prime = i;
+        },
         None => return None
     };
+
+    println!("{}", vec[index_prime]);
+
+
+    // let a = generator::linear_congruent()
 
 //    for _ in 1..t {
 //        let mut a= generator::linear_congruent(n.bits());
@@ -31,8 +40,8 @@ pub fn test_miller_rabin(vec:&Vec<BigUint>) -> Option<bool> {
 }
 
 fn get_millrab_d(n:&BigUint) -> Option<MillerRabinD> {
-    let mut d:BigUint = n.clone() - BigUint::from(1u32);
-    let mut r:u32 = 0;
+    let mut d: BigUint = n.clone() - BigUint::from(1u32);
+    let mut r: u32 = 0;
     let mut is_even = check_even(&d);
 
     // Check to make sure the number passed is even
@@ -51,17 +60,18 @@ fn get_millrab_d(n:&BigUint) -> Option<MillerRabinD> {
     };
 
     Some(d)
-
 }
 
-fn get_millrab_d_vec(vec:&Vec<BigUint>) -> Option<MillerRabinD> {
-    for i in vec.iter() {
+
+
+fn get_millrab_d_vec(vec:&Vec<BigUint>) -> Option<(MillerRabinD, usize)>  {
+    for (i, item) in vec.iter().enumerate() {
         println!("{} {}:", "Testing", i);
-        match get_millrab_d(i) {
+        match get_millrab_d(item) {
             Some(d) => {
                 println!("{}: {}", "r identified", d.r);
                 println!("{}: {}", "d identified", d.d);
-                return Some(d)
+                return Some((d, i))
             },
             None => println!("(n-1) odd, skipping...")
         }
